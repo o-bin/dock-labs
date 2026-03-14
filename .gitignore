@@ -1,0 +1,18 @@
+# Binaries
+*-remote-ram
+docker-cli-remote-ram
+memory_client_x86_64
+memory_server
+
+# Build artifacts and caches
+gopath/
+moby/bundles/
+cli/build/
+
+# Ignore nested git repos
+**/.git/
+!/.git/
+
+# IDEs
+.vscode/
+.idea/

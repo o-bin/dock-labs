@@ -1,0 +1,20 @@
+#!/bin/bash
+# Get the absolute path of the script even if it's symlinked
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do
+  DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+done
+DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
+
+# Target USB path requested by user
+USB_ROOT="/media/emmanuel/usb-lab"
+
+# Run dockerd with data-root on USB and custom runc
+exec sudo "$DIR/dockerd-remote-ram" \
+  --data-root "$USB_ROOT" \
+  --add-runtime remoteboy="$DIR/runc-remote-ram" \
+  --default-runtime=remoteboy \
+  --remote-memory-server="192.168.0.100:8888" \
+  "$@"
